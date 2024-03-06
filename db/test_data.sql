@@ -56,7 +56,7 @@ INSERT INTO seasons (program_id, name) VALUES
   (5, 3),
   (7, 4),
   (9, 5),
-  (9, 5),
+  (10, 5),
   (11, 6),
   (13, 7);
 
@@ -156,10 +156,25 @@ INSERT INTO episodes (season_id, number, title, detail, length, release_date, vi
   INSERT INTO archives (channel_id, episode_id, start_time, end_time, view_count)
   SELECT
     FLOOR(RAND() * 13) + 1 AS channel_id,
-    FLOOR(RAND() * 26) + 1 AS episode_id,
-    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2020-02-24', INTERVAL FLOOR(RAND() * 1000) DAY)) AS start_time,
-    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2020-02-24', INTERVAL FLOOR(RAND() * 1000) DAY)) AS end_time,
+    FLOOR(RAND() * 78) + 1 AS episode_id,
+    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2024-02-27', INTERVAL FLOOR(RAND() * 100) DAY)) AS start_time,
+    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2024-02-27', INTERVAL FLOOR(RAND() * 100) DAY)) AS end_time,
     FLOOR(RAND() * 300000) AS view_count
   FROM
       information_schema.tables AS t1, information_schema.tables AS t2
-  LIMIT 500;
+  LIMIT 10000;
+
+/* INSERT INTO archives (channel_id, episode_id, start_time, end_time, view_count)
+SELECT
+    FLOOR(RAND() * 13) + 1 AS channel_id,
+    FLOOR(RAND() * 78) + 1 AS episode_id,
+    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2024-02-27', INTERVAL FLOOR(RAND() * 100) DAY)) AS start_time,
+    --トリガーを使ってみて、変数に入れる
+    TIMESTAMPADD(HOUR, HOUR(episodes.length), start_time) AS end_time,
+    FLOOR(RAND() * 300000) AS view_count
+FROM
+    information_schema.tables AS t1,
+    information_schema.tables AS t2,
+    episodes
+LIMIT 1;
+ */
