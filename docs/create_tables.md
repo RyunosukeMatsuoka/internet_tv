@@ -2,6 +2,10 @@
 
 ## テーブルを設計する
 
+### ER図
+<img width="361" alt="スクリーンショット 2024-03-07 174027" src="https://github.com/RyunosukeMatsuoka/internet_tv/assets/152969864/1981f6bc-a42e-4008-977b-c99a2a0f8af7">
+
+### テーブル設計
 テーブル：channels
 | カラム名 | データ型    | PK  | UK  | NOT NULL | デフォルト値 | AUTO_INCREMENT |
 | -------- | ----------- | --- | --- | -------- | ------------ | -------------- |
