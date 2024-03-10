@@ -1,23 +1,19 @@
---チャンネルテーブル
 CREATE TABLE channels (
   id SMALLINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   name VARCHAR(30) NOT NULL UNIQUE KEY
 ) DEFAULT CHARACTER SET=utf8mb4;
 
---番組テーブル
 CREATE TABLE programs (
   id BIGINT(20) AUTO_INCREMENT NOT NULL PRIMARY KEY,
   name VARCHAR(30) NOT NULL UNIQUE KEY,
   detail VARCHAR(100) NOT NULL
 ) DEFAULT CHARACTER SET=utf8mb4;
 
---ジャンルテーブル
 CREATE TABLE genres (
   id SMALLINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   name VARCHAR(30) NOT NULL UNIQUE KEY
 ) DEFAULT CHARACTER SET=utf8mb4;
 
---シーズンテーブル
 CREATE TABLE seasons (
   id BIGINT(20) AUTO_INCREMENT NOT NULL PRIMARY KEY,
   program_id BIGINT(20) NOT NULL,
@@ -25,7 +21,6 @@ CREATE TABLE seasons (
     FOREIGN KEY (program_id) REFERENCES programs(id)
 ) DEFAULT CHARACTER SET=utf8mb4;
 
---エピソードテーブル
 CREATE TABLE episodes (
   id BIGINT(20) AUTO_INCREMENT NOT NULL PRIMARY KEY,
   season_id BIGINT(20),
@@ -38,7 +33,6 @@ CREATE TABLE episodes (
     FOREIGN KEY (season_id) REFERENCES seasons(id)
 ) DEFAULT CHARACTER SET=utf8mb4;
 
---アーカイブテーブル
 CREATE TABLE archives (
   id BIGINT(20) AUTO_INCREMENT NOT NULL PRIMARY KEY,
   channel_id SMALLINT NOT NULL,
@@ -50,7 +44,6 @@ CREATE TABLE archives (
     FOREIGN KEY (episode_id) REFERENCES episodes(id)
 ) DEFAULT CHARACTER SET=utf8mb4;
 
---チャンネルと番組を関連付けるテーブル
 CREATE TABLE channel_programs (
   id BIGINT(20) AUTO_INCREMENT NOT NULL PRIMARY KEY,
   channel_id SMALLINT NOT NULL,
@@ -59,7 +52,6 @@ CREATE TABLE channel_programs (
     FOREIGN KEY (program_id) REFERENCES programs(id)
 ) DEFAULT CHARACTER SET=utf8mb4;
 
---番組とジャンルを関連付けるテーブル
 CREATE TABLE program_genres (
   id BIGINT(20) AUTO_INCREMENT NOT NULL PRIMARY KEY,
   program_id BIGINT(20) NOT NULL,
