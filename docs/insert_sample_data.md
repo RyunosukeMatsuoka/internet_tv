@@ -181,12 +181,12 @@ INSERT INTO archives (channel_id, episode_id, start_time, end_time, view_count)
   SELECT
     FLOOR(RAND() * 13) + 1 AS channel_id,
     FLOOR(RAND() * 26) + 1 AS episode_id,
-    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2020-02-24', INTERVAL FLOOR(RAND() * 1000) DAY)) AS start_time,
-    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2020-02-24', INTERVAL FLOOR(RAND() * 1000) DAY)) AS end_time,
+    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2020-02-24', INTERVAL FLOOR(RAND() * 100) DAY)) AS start_time,
+    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2020-02-24', INTERVAL FLOOR(RAND() * 100) DAY)) AS end_time,
     FLOOR(RAND() * 300000) AS view_count
   FROM
       information_schema.tables AS t1, information_schema.tables AS t2
-  LIMIT 500;
+  LIMIT 10000;
 ```
 
 上記のSQL文を一つずつ実行していきます。

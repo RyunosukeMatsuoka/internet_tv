@@ -112,7 +112,7 @@ LIMIT 2
 SELECT
   g.name AS 'ジャンル名',
   p.name AS '番組タイトル',
-  sub_query.avg_view_count AS '最大平均視聴数'
+  sub_query.avg_view_count AS 'エピソード平均視聴数'
 FROM
   genres AS g
   INNER JOIN (
