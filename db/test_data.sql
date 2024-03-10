@@ -1,4 +1,3 @@
---チャンネルデータ
 INSERT INTO channels (name) VALUES
   ('アニメ1'),
   ('アニメ2'),
@@ -14,7 +13,6 @@ INSERT INTO channels (name) VALUES
   ('音楽2'),
   ('麻雀');
 
---番組データ
 INSERT INTO programs (name, detail) VALUES
   ('ジョジョの奇妙な冒険', '由緒正しい家に生まれたジョナサン・ジョースター（通称ジョジョ）と貧しい家の子であるディオ・ブランドー。ふたりは少年時代を共に過ごし、やがて数奇な運命に出会うこととなる…。'),
   ('VIVANT', '敵か味方か、味方か敵かー前例のないエンタメが幕を開ける！限界突破！アドベンチャードラマ始動！'),
@@ -22,9 +20,9 @@ INSERT INTO programs (name, detail) VALUES
   ('ぼくんちのねこ', '家庭の猫を紹介する。'),
   ('ニュース99', '最新のニュースをお届けします。'),
   ('音楽の魂サート', '魂のこもった音楽を紹介します。'),
-  ('麻雀最低戦', 'プロが自身のダメだったところを解説してくれます');
+  ('麻雀最低戦', 'プロが自身のダメだったところを解説してくれます'),
+  ('CR7とBBC', 'クリロナとベンゼマ、ベイル関係性をおっていく。');
 
---ジャンルデータ
 INSERT INTO genres (name) VALUES
   ('アニメ'),
   ('ドラマ'),
@@ -36,7 +34,6 @@ INSERT INTO genres (name) VALUES
   ('アクション'),
   ('ミステリー');
 
---シーズンデータ
 INSERT INTO seasons (program_id, name) VALUES
   (1, 'シーズン1'),
   (1, 'シーズン2'),
@@ -46,9 +43,9 @@ INSERT INTO seasons (program_id, name) VALUES
   (4, 'シーズン2'),
   (5, 'シーズン1'),
   (6, 'シーズン1'),
-  (7, 'シーズン1');
+  (7, 'シーズン1'),
+  (8, 'シーズン1');
 
-  --チャンネルごとの番組データ
   INSERT INTO channel_programs (channel_id, program_id) VALUES
   (1, 1),
   (2, 1),
@@ -58,9 +55,9 @@ INSERT INTO seasons (program_id, name) VALUES
   (9, 5),
   (10, 5),
   (11, 6),
-  (13, 7);
+  (13, 7),
+  (5, 8);
 
-  --番組ごとのジャンルデータ
   INSERT INTO program_genres (program_id, genre_id) VALUES
   (1, 1),
   (1, 8),
@@ -70,9 +67,9 @@ INSERT INTO seasons (program_id, name) VALUES
   (4, 4),
   (5, 5),
   (6, 6),
-  (7, 7);
+  (7, 7),
+  (8, 3);
 
---エピソードデータ
 INSERT INTO episodes (season_id, number, title, detail, length, release_date, view_count) VALUES
   (1, '1', '第一話 「侵略者ディオ」', '雷雨の夜、馬車事故に遭った英国貴族のジョースター卿。偶然その場に居合わせたブランドーは、自分が命を救ったふりをして恩を売る。12年が過ぎ、ブランドーの死後、その息子・ディオがジョースター家に招かれた。', '00:23:00', '2015-10-05', 10000),
   (1, '2', '第二話 「過去からの手紙」', '大学生になり、ジョースター家の正式な養子となっていたディオは、ジョースター家の乗っ取りとジョースター卿の毒殺を目論む。ジョナサンはブランドーの手紙を発見し、父が衰弱していく原因が毒ではないかと疑う。', '00:23:00', '2015-10-12', 20000),
@@ -151,8 +148,8 @@ INSERT INTO episodes (season_id, number, title, detail, length, release_date, vi
   (9, '1', '麻雀最低戦 1', '今回のゲストは、渋川さん。', '01:10:00', '2010-07-13', 60000),
   (9, '2', '麻雀最低戦 2', '今回のゲストは、堀さん。', '01:10:00', '2010-07-27', 50000),
   (9, '3', '麻雀最低戦 3', '今回のゲストは、多井さん。', '01:10:00', '2010-08-10', 70000),
-  (9, '4', '麻雀最低戦 4', '今回のゲストは、岡田さん。', '01:10:00', '2010-08-24', 100000);
-  --アーカイブデータ
+  (9, '4', '麻雀最低戦 4', '今回のゲストは、岡田さん。', '01:10:00', '2010-08-24', 100000),
+  (10, '1', 'クリロナとBBC', 'クリロナとベンゼマ、ベイルの関係性を紐解きます。', '01:10:00', '2010-08-24', 350000);
   INSERT INTO archives (channel_id, episode_id, start_time, end_time, view_count)
   SELECT
     FLOOR(RAND() * 13) + 1 AS channel_id,
@@ -163,18 +160,3 @@ INSERT INTO episodes (season_id, number, title, detail, length, release_date, vi
   FROM
       information_schema.tables AS t1, information_schema.tables AS t2
   LIMIT 10000;
-
-/* INSERT INTO archives (channel_id, episode_id, start_time, end_time, view_count)
-SELECT
-    FLOOR(RAND() * 13) + 1 AS channel_id,
-    FLOOR(RAND() * 78) + 1 AS episode_id,
-    TIMESTAMPADD(HOUR, FLOOR(RAND() * 24), DATE_ADD('2024-02-27', INTERVAL FLOOR(RAND() * 100) DAY)) AS start_time,
-    --トリガーを使ってみて、変数に入れる
-    TIMESTAMPADD(HOUR, HOUR(episodes.length), start_time) AS end_time,
-    FLOOR(RAND() * 300000) AS view_count
-FROM
-    information_schema.tables AS t1,
-    information_schema.tables AS t2,
-    episodes
-LIMIT 1;
- */

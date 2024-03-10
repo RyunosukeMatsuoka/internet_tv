@@ -89,22 +89,88 @@ LIMIT 2
 \G
 
 --6. (advanced) ジャンルごとの番組の視聴数ランキングを知りたいです。番組の視聴数ランキングはエピソードの平均視聴数ランキングとします。ジャンルごとに視聴数トップの番組に対して、ジャンル名、番組タイトル、エピソード平均視聴数を取得してください。
+
 SELECT
   g.name AS 'ジャンル名',
   p.name AS '番組タイトル',
-  AVG(e.view_count) AS 'エピソード平均視聴数'
+  sub_query.avg_view_count AS '最大平均視聴数'
 FROM
   genres AS g
-  INNER JOIN program_genres AS pg
-    ON g.id = pg.genre_id
-  INNER JOIN programs AS p
-    ON pg.program_id = p.id
-  INNER JOIN seasons AS s
-    ON p.id = s.program_id
-  INNER JOIN episodes AS e
-    ON s.id = e.season_id
+  INNER JOIN (
+    SELECT
+      pg.genre_id,
+      p.id AS program_id,
+      p.name,
+      AVG(e.view_count) AS avg_view_count
+    FROM
+      program_genres AS pg
+      INNER JOIN programs AS p ON pg.program_id = p.id
+      INNER JOIN seasons AS s ON p.id = s.program_id
+      INNER JOIN episodes AS e ON s.id = e.season_id
+    GROUP BY
+      pg.genre_id,
+      p.id,
+      p.name
+  ) AS sub_query ON g.id = sub_query.genre_id
+  INNER JOIN (
+    SELECT
+      g.id AS genre_id,
+      MAX(sub_query.avg_view_count) AS max_avg_view_count
+    FROM
+      genres AS g
+      INNER JOIN (
+        SELECT
+          pg.genre_id,
+          p.id AS program_id,
+          AVG(e.view_count) AS avg_view_count
+        FROM
+          program_genres AS pg
+          INNER JOIN programs AS p ON pg.program_id = p.id
+          INNER JOIN seasons AS s ON p.id = s.program_id
+          INNER JOIN episodes AS e ON s.id = e.season_id
+        GROUP BY
+          pg.genre_id,
+          p.id
+      ) AS sub_query ON g.id = sub_query.genre_id
+    GROUP BY
+      g.id
+  ) AS max_avg_view ON g.id = max_avg_view.genre_id
+  INNER JOIN programs AS p ON sub_query.program_id = p.id AND sub_query.avg_view_count = max_avg_view.max_avg_view_count
+ORDER BY
+  g.name;
+
+/* SELECT
+  g.name AS 'ジャンル名',
+  p.name AS '番組タイトル',
+  AVG(e.view_count) AS '最大平均視聴数'
+FROM
+  genres AS g
+  INNER JOIN program_genres AS pg ON g.id = pg.genre_id
+  INNER JOIN programs AS p ON pg.program_id = p.id
+  INNER JOIN seasons AS s ON p.id = s.program_id
+  INNER JOIN episodes AS e ON s.id = e.season_id
 GROUP BY
   g.name,
   p.name
-ORDER BY エピソード平均視聴数 DESC
-\G
+HAVING
+  AVG(e.view_count) = (
+    SELECT
+      MAX(avg_view_count)
+    FROM (
+      SELECT
+        pg.genre_id AS genre_id,
+        pg.program_id AS program_id,
+        AVG(e.view_count) AS avg_view_count
+      FROM
+        program_genres AS pg
+        INNER JOIN programs AS p ON pg.program_id = p.id
+        INNER JOIN seasons AS s ON p.id = s.program_id
+        INNER JOIN episodes AS e ON s.id = e.season_id
+      GROUP BY
+        pg.id
+    ) AS sub_query
+    WHERE
+      g.id = sub_query.genre_id
+  )
+ORDER BY
+  g.name; */
