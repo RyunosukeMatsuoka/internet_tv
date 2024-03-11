@@ -192,7 +192,9 @@ INSERT INTO archives (channel_id, episode_id, start_time, end_time, view_count)
 上記のSQL文を一つずつ実行していきます。
 （internet_tv を指定した上で実行します。）
 
-コピペすると簡単にできます！
+また、一括でサンプルデータを入れたい場合は
+[サンプルデータ一覧](../db/test_data.sql)
+を全選択して実行してください。
 
 最後に、データが入っているか確認します。
 ```sql
