@@ -150,6 +150,7 @@ INSERT INTO episodes (season_id, number, title, detail, length, release_date, vi
   (9, '3', '麻雀最低戦 3', '今回のゲストは、多井さん。', '01:10:00', '2010-08-10', 70000),
   (9, '4', '麻雀最低戦 4', '今回のゲストは、岡田さん。', '01:10:00', '2010-08-24', 100000),
   (10, '1', 'クリロナとBBC', 'クリロナとベンゼマ、ベイルの関係性を紐解きます。', '01:10:00', '2010-08-24', 350000);
+
   INSERT INTO archives (channel_id, episode_id, start_time, end_time, view_count)
   SELECT
     FLOOR(RAND() * 13) + 1 AS channel_id,
